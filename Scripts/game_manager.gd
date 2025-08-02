@@ -126,7 +126,7 @@ func ai_decide_combat_actions() -> CombatAction:
 		#Añadimos las probabilidades al array auxiliar array_weights que guarda las
 		#base_weights de cada acción
 		array_weights.append(weight)
-		print("Weight: " + str(weight))
+		#print("Weight: " + str(weight))
 		#Por cada iteración, sumamos las base_weights
 		total_weights += weight
 	print("Total Weight: " + str(total_weights))
