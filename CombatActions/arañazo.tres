@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CombatAction" load_steps=2 format=3 uid="uid://chsd5rdojhicr"]
+
+[ext_resource type="Script" uid="uid://c4lutap3uvgri" path="res://Scripts/combat_action.gd" id="1_3abx3"]
+
+[resource]
+script = ExtResource("1_3abx3")
+name = "Arañazo"
+description = "Quita 15 de daño"
+melee_damage = 15
+heal_amount = 0
+base_weight = 150
+metadata/_custom_type_script = "uid://c4lutap3uvgri"

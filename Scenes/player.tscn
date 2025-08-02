@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://cpsnmh1og5lqb"]
+
+[ext_resource type="Script" uid="uid://cvoxmt3rma0tx" path="res://Scripts/player.gd" id="1_cvnsp"]
+[ext_resource type="Texture2D" uid="uid://cg2pqwheitc8m" path="res://Assets/Sprites/Charmander-back.png" id="1_v0iea"]
+[ext_resource type="Script" uid="uid://c3gk6mk3ljr51" path="res://Scripts/health_bar.gd" id="3_6t5aa"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cvnsp"]
+bg_color = Color(0.486685, 0.404682, 0.519352, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6t5aa"]
+bg_color = Color(0.170206, 0.772345, 0.458314, 1)
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_cvnsp")
+
+[node name="Sprite2d" type="Sprite2D" parent="."]
+position = Vector2(180, 244)
+scale = Vector2(2, 2)
+texture = ExtResource("1_v0iea")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = 130.0
+offset_top = 180.0
+offset_right = 234.0
+offset_bottom = 196.0
+theme_override_styles/background = SubResource("StyleBoxFlat_cvnsp")
+theme_override_styles/fill = SubResource("StyleBoxFlat_6t5aa")
+value = 30.0
+show_percentage = false
+script = ExtResource("3_6t5aa")

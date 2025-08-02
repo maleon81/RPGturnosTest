@@ -1,0 +1,105 @@
+[gd_scene load_steps=14 format=3 uid="uid://dwvl0an5lna2j"]
+
+[ext_resource type="Texture2D" uid="uid://bd3el04st4edf" path="res://Assets/Sprites/Plataforma.png" id="1_aof88"]
+[ext_resource type="Script" uid="uid://bk73hhu4mmn0h" path="res://Scripts/game_manager.gd" id="1_r7lh0"]
+[ext_resource type="Texture2D" uid="uid://c8oadng23cbjk" path="res://Assets/Sprites/Fondo.png" id="1_y7x3a"]
+[ext_resource type="PackedScene" uid="uid://cpsnmh1og5lqb" path="res://Scenes/player.tscn" id="4_y7x3a"]
+[ext_resource type="Script" uid="uid://c4lutap3uvgri" path="res://Scripts/combat_action.gd" id="5_dr1m7"]
+[ext_resource type="PackedScene" uid="uid://bdir4ei03aj7t" path="res://Scenes/ia.tscn" id="5_r7lh0"]
+[ext_resource type="Resource" uid="uid://chsd5rdojhicr" path="res://CombatActions/arañazo.tres" id="6_vs4tl"]
+[ext_resource type="Resource" uid="uid://djle681yfp56v" path="res://CombatActions/llamarada.tres" id="7_7hkq8"]
+[ext_resource type="Resource" uid="uid://cns4a26piik8g" path="res://CombatActions/pocion.tres" id="8_olq85"]
+[ext_resource type="Resource" uid="uid://ckbucbvvhf12e" path="res://CombatActions/burbuja.tres" id="10_vs4tl"]
+[ext_resource type="Script" uid="uid://dmlyxp0h0wxy" path="res://Scripts/action_button.gd" id="11_7hkq8"]
+[ext_resource type="Theme" uid="uid://4032gr7yhs2e" path="res://Themes/poke_theem.tres" id="11_olq85"]
+[ext_resource type="Script" uid="uid://c833cakguknsi" path="res://Scripts/combat_ui.gd" id="12_bl8um"]
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("player_character", "ia_character")]
+script = ExtResource("1_r7lh0")
+player_character = NodePath("Player")
+ia_character = NodePath("IA")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(300, 200)
+
+[node name="Backgrounds" type="Node2D" parent="."]
+
+[node name="Background01" type="TextureRect" parent="Backgrounds"]
+offset_top = 120.0
+offset_right = 600.0
+offset_bottom = 400.0
+texture = ExtResource("1_y7x3a")
+stretch_mode = 4
+
+[node name="Background02" type="TextureRect" parent="Backgrounds"]
+offset_right = 600.0
+offset_bottom = 280.0
+texture = ExtResource("1_y7x3a")
+stretch_mode = 4
+
+[node name="Plataforma" type="Sprite2D" parent="."]
+position = Vector2(300, 174)
+scale = Vector2(2, 2)
+texture = ExtResource("1_aof88")
+
+[node name="Player" parent="." instance=ExtResource("4_y7x3a")]
+is_player = true
+current_health = 100
+max_health = 100
+combat_actions = Array[ExtResource("5_dr1m7")]([ExtResource("6_vs4tl"), ExtResource("7_7hkq8"), ExtResource("8_olq85")])
+
+[node name="IA" parent="." instance=ExtResource("5_r7lh0")]
+current_health = 100
+max_health = 100
+combat_actions = Array[ExtResource("5_dr1m7")]([ExtResource("6_vs4tl"), ExtResource("10_vs4tl"), ExtResource("8_olq85")])
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CombatUI" type="Panel" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -114.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("11_olq85")
+script = ExtResource("12_bl8um")
+
+[node name="ActionsContainer" type="VBoxContainer" parent="CanvasLayer/CombatUI"]
+layout_mode = 0
+offset_left = 24.0
+offset_right = 308.0
+offset_bottom = 114.0
+alignment = 1
+
+[node name="ActionButton" type="Button" parent="CanvasLayer/CombatUI/ActionsContainer"]
+layout_mode = 2
+text = "Arañazo"
+script = ExtResource("11_7hkq8")
+
+[node name="ActionButton2" type="Button" parent="CanvasLayer/CombatUI/ActionsContainer"]
+layout_mode = 2
+text = "Arañazo"
+script = ExtResource("11_7hkq8")
+
+[node name="ActionButton3" type="Button" parent="CanvasLayer/CombatUI/ActionsContainer"]
+layout_mode = 2
+text = "Arañazo"
+script = ExtResource("11_7hkq8")
+
+[node name="PassTurn" type="Button" parent="CanvasLayer/CombatUI/ActionsContainer"]
+layout_mode = 2
+text = "Pasar Turno"
+
+[node name="Description" type="RichTextLabel" parent="CanvasLayer/CombatUI"]
+layout_mode = 0
+offset_left = 364.0
+offset_right = 576.0
+offset_bottom = 114.0
+bbcode_enabled = true
+
+[connection signal="pressed" from="CanvasLayer/CombatUI/ActionsContainer/PassTurn" to="CanvasLayer/CombatUI" method="_on_pass_turn_pressed"]
