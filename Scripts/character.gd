@@ -1,6 +1,6 @@
 extends Node2D
 
-class_name Player
+class_name Character
 
 #Señal que gestiona el daño => La variable health reducirá o aumentará su valor
 signal OnTakeDamage(health : int)
@@ -18,8 +18,14 @@ signal OnHeal(health : int)
 #Array de acciones de combate
 @export var combat_actions : Array[CombatAction]
 
-#Gestionar la escala del personaje
-var target_scale : float = 2.0
+#Gestionar la escala del personaje para que se vea más grande
+var target_scale : float = 1.0
+
+#Para cambiar el sprite
+#Se crea una variable para introducir el Sprite que corresponde (Player o IA)
+@export var display_texture : Texture2D
+#Sobre cuál nodo se va a modificar la textura
+@onready var sprite : Sprite2D = $CharacterSprite
 
 @onready var audio: AudioStreamPlayer = $AudioStreamPlayer
 
@@ -29,15 +35,18 @@ var take_damage_sound : AudioStream = preload("res://Assets/Audio/take_damage.wa
 var heal_sound : AudioStream = preload("res://Assets/Audio/heal.wav")
 
 func _ready() -> void:
-	pass
+	#Asignamos el sprite que corresponde
+	sprite.texture = display_texture
 
 func _process(delta: float) -> void:
-	pass
+	#Se modifica la escala del character al inicio del turno
+	scale.x = lerp(scale.x, target_scale, delta * 10)
+	scale.y = lerp(scale.y, target_scale, delta * 10)
 
 #Iniciar el turno del Player
 func begin_turn():
 	#Escala mayor al iniciar
-	target_scale = 2.05
+	target_scale = 1.05
 	
 	if is_player:
 		print("Comienza el turno del Player")
@@ -47,7 +56,7 @@ func begin_turn():
 #Terminar el turno del Player
 func end_turn():
 	#La escala vuelve a la normalidad
-	target_scale = 2
+	target_scale = 0.97
 
 #Recibir daño
 func take_damage(amount : int):
@@ -65,7 +74,7 @@ func heal(amount : int):
 	play_audio(heal_sound)
 
 #Gestionar las acciones de combate (quien la realiza , a quien la realiza)
-func cast_combat_action(action : CombatAction, opponent : Player):
+func cast_combat_action(action : CombatAction, opponent : Character):
 	#Si no se ejecuta acción, salimos de la función
 	if action == null:
 		return
@@ -78,4 +87,5 @@ func cast_combat_action(action : CombatAction, opponent : Player):
 
 #Reproducir el audio
 func play_audio(stream : AudioStream):
-	pass
+	audio.stream = stream
+	audio.play()

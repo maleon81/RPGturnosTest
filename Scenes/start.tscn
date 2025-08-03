@@ -1,0 +1,74 @@
+[gd_scene load_steps=4 format=3 uid="uid://t83fmgkq1r2q"]
+
+[ext_resource type="Theme" uid="uid://4032gr7yhs2e" path="res://Themes/poke_theem.tres" id="1_3bxa3"]
+[ext_resource type="Script" uid="uid://cilfuahnunn73" path="res://Scripts/start.gd" id="1_r48yj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bk35t"]
+bg_color = Color(0.267813, 0.669503, 0.6863, 1)
+
+[node name="Start" type="Node2D"]
+script = ExtResource("1_r48yj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+offset_right = 600.0
+offset_bottom = 400.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bk35t")
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.0
+offset_top = -125.0
+offset_right = 116.0
+offset_bottom = -83.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_3bxa3")
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Pokémon Battle"
+
+[node name="Label2" type="Label" parent="CanvasLayer/Panel"]
+layout_mode = 0
+offset_left = 94.0
+offset_top = 72.0
+offset_right = 158.0
+offset_bottom = 114.0
+rotation = -0.252217
+theme = ExtResource("1_3bxa3")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "mini"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -33.5
+offset_top = -27.0
+offset_right = 33.5
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Start" type="Button" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3bxa3")
+text = "Comenzar"
+
+[node name="Quit" type="Button" parent="CanvasLayer/Panel/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3bxa3")
+text = "Salir"
+
+[connection signal="pressed" from="CanvasLayer/Panel/VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

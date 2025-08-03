@@ -1,18 +1,24 @@
-[gd_scene load_steps=14 format=3 uid="uid://dwvl0an5lna2j"]
+[gd_scene load_steps=18 format=3 uid="uid://dwvl0an5lna2j"]
 
 [ext_resource type="Texture2D" uid="uid://bd3el04st4edf" path="res://Assets/Sprites/Plataforma.png" id="1_aof88"]
 [ext_resource type="Script" uid="uid://bk73hhu4mmn0h" path="res://Scripts/game_manager.gd" id="1_r7lh0"]
 [ext_resource type="Texture2D" uid="uid://c8oadng23cbjk" path="res://Assets/Sprites/Fondo.png" id="1_y7x3a"]
-[ext_resource type="PackedScene" uid="uid://cpsnmh1og5lqb" path="res://Scenes/player.tscn" id="4_y7x3a"]
+[ext_resource type="PackedScene" uid="uid://cpsnmh1og5lqb" path="res://Scenes/character.tscn" id="4_y7x3a"]
 [ext_resource type="Script" uid="uid://c4lutap3uvgri" path="res://Scripts/combat_action.gd" id="5_dr1m7"]
-[ext_resource type="PackedScene" uid="uid://bdir4ei03aj7t" path="res://Scenes/ia.tscn" id="5_r7lh0"]
 [ext_resource type="Resource" uid="uid://chsd5rdojhicr" path="res://CombatActions/arañazo.tres" id="6_vs4tl"]
 [ext_resource type="Resource" uid="uid://djle681yfp56v" path="res://CombatActions/llamarada.tres" id="7_7hkq8"]
 [ext_resource type="Resource" uid="uid://cns4a26piik8g" path="res://CombatActions/pocion.tres" id="8_olq85"]
+[ext_resource type="Texture2D" uid="uid://cg2pqwheitc8m" path="res://Assets/Sprites/Charmander-back.png" id="9_ao2oo"]
 [ext_resource type="Resource" uid="uid://ckbucbvvhf12e" path="res://CombatActions/burbuja.tres" id="10_vs4tl"]
 [ext_resource type="Script" uid="uid://dmlyxp0h0wxy" path="res://Scripts/action_button.gd" id="11_7hkq8"]
+[ext_resource type="Texture2D" uid="uid://c63aa6s1hu0xa" path="res://Assets/Sprites/Squirtle-front.png" id="11_ep4rr"]
 [ext_resource type="Theme" uid="uid://4032gr7yhs2e" path="res://Themes/poke_theem.tres" id="11_olq85"]
 [ext_resource type="Script" uid="uid://c833cakguknsi" path="res://Scripts/combat_ui.gd" id="12_bl8um"]
+[ext_resource type="Script" uid="uid://dxg76wboxg1p8" path="res://Scripts/game_over.gd" id="14_mvbrm"]
+[ext_resource type="AudioStream" uid="uid://c5uifvq66f5ml" path="res://Assets/Audio/battle_pokemon.mp3" id="16_ep4rr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ao2oo"]
+bg_color = Color(0.945903, 0.429475, 0.399563, 1)
 
 [node name="Main" type="Node2D" node_paths=PackedStringArray("player_character", "ia_character")]
 script = ExtResource("1_r7lh0")
@@ -43,15 +49,19 @@ scale = Vector2(2, 2)
 texture = ExtResource("1_aof88")
 
 [node name="Player" parent="." instance=ExtResource("4_y7x3a")]
+position = Vector2(-1, -4)
 is_player = true
 current_health = 100
 max_health = 100
 combat_actions = Array[ExtResource("5_dr1m7")]([ExtResource("6_vs4tl"), ExtResource("7_7hkq8"), ExtResource("8_olq85")])
+display_texture = ExtResource("9_ao2oo")
 
-[node name="IA" parent="." instance=ExtResource("5_r7lh0")]
+[node name="IA" parent="." instance=ExtResource("4_y7x3a")]
+position = Vector2(231, -103)
 current_health = 100
 max_health = 100
 combat_actions = Array[ExtResource("5_dr1m7")]([ExtResource("6_vs4tl"), ExtResource("10_vs4tl"), ExtResource("8_olq85")])
+display_texture = ExtResource("11_ep4rr")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -102,4 +112,48 @@ offset_right = 576.0
 offset_bottom = 114.0
 bbcode_enabled = true
 
+[node name="GameOver" type="Panel" parent="CanvasLayer"]
+visible = false
+offset_right = 600.0
+offset_bottom = 400.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ao2oo")
+script = ExtResource("14_mvbrm")
+
+[node name="Label" type="Label" parent="CanvasLayer/GameOver"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.5
+offset_top = -34.5
+offset_right = 120.5
+offset_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("11_olq85")
+text = "¡Inténtalo de nuevo!"
+
+[node name="Button" type="Button" parent="CanvasLayer/GameOver"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -43.5
+offset_top = 8.5
+offset_right = 44.5
+offset_bottom = 39.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Play Again"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_ep4rr")
+volume_db = -5.0
+autoplay = true
+
 [connection signal="pressed" from="CanvasLayer/CombatUI/ActionsContainer/PassTurn" to="CanvasLayer/CombatUI" method="_on_pass_turn_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameOver/Button" to="CanvasLayer/GameOver" method="_on_button_pressed"]

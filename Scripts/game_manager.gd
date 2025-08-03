@@ -1,24 +1,51 @@
 extends Node2D
 
 #Definimos el nodo del Player
-@export var player_character : Player
+@export var player_character : Character
 #Definimos el nodo de la IA
-@export var ia_character : Player
+@export var ia_character : Character
 #Qué personajes está luchando en ese momento
-var current_character : Player
+var current_character : Character
 
 @onready var player_ui = $CanvasLayer/CombatUI
+@onready var game_over_panel = $CanvasLayer/GameOver
 
 #Saber si el juego ha terminado
 var game_over : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	#Llamar a las funciones que controlan el daño
+	player_character.OnTakeDamage.connect(player_take_damage)
+	ia_character.OnTakeDamage.connect(ia_take_damage)
+	
+	game_over_panel.visible = false
+	
 	next_turn()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+#Creamos dos funciones para controlar el daño de playuer e ia y que se usarán para llamar a GameOver
+func player_take_damage(health : int):
+	if health <= 0:
+		end_game(ia_character)
+
+func ia_take_damage(health : int):
+	if health <= 0:
+		end_game(player_character)
+
+#Creamos una función para gestionar el final del juego dependiendo de quién haya ganado
+func end_game(winner : Character):
+	#Si el juego ha terminado, se finaliza y activamos el panel de GameOver
+	game_over = true
+	game_over_panel.visible = true
+	
+	if winner == player_character:
+		game_over_panel.set_label_text("¡Charmander ganó la batalla!")
+	else:
+		game_over_panel.set_label_text("¡No te rindas! Vuelve a intentarlo")
 
 #Se encarga de gestionar los turnos
 func next_turn():
@@ -126,7 +153,7 @@ func ai_decide_combat_actions() -> CombatAction:
 		#Añadimos las probabilidades al array auxiliar array_weights que guarda las
 		#base_weights de cada acción
 		array_weights.append(weight)
-		#print("Weight: " + str(weight))
+		print("Weight: " + str(weight))
 		#Por cada iteración, sumamos las base_weights
 		total_weights += weight
 	print("Total Weight: " + str(total_weights))

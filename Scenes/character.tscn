@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cpsnmh1og5lqb"]
+[gd_scene load_steps=7 format=3 uid="uid://cpsnmh1og5lqb"]
 
-[ext_resource type="Script" uid="uid://cvoxmt3rma0tx" path="res://Scripts/player.gd" id="1_cvnsp"]
-[ext_resource type="Texture2D" uid="uid://cg2pqwheitc8m" path="res://Assets/Sprites/Charmander-back.png" id="1_v0iea"]
+[ext_resource type="Script" uid="uid://cvoxmt3rma0tx" path="res://Scripts/character.gd" id="1_cvnsp"]
+[ext_resource type="Texture2D" uid="uid://bi42vabep7tu" path="res://Assets/Sprites/Bulbasaur -front.png" id="2_nytcm"]
 [ext_resource type="Script" uid="uid://c3gk6mk3ljr51" path="res://Scripts/health_bar.gd" id="3_6t5aa"]
+[ext_resource type="Script" uid="uid://jusf0jitarmh" path="res://Scripts/character_sprite.gd" id="3_nytcm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cvnsp"]
 bg_color = Color(0.486685, 0.404682, 0.519352, 1)
@@ -10,13 +11,14 @@ bg_color = Color(0.486685, 0.404682, 0.519352, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6t5aa"]
 bg_color = Color(0.170206, 0.772345, 0.458314, 1)
 
-[node name="Player" type="Node2D"]
+[node name="Character" type="Node2D"]
 script = ExtResource("1_cvnsp")
 
-[node name="Sprite2d" type="Sprite2D" parent="."]
+[node name="CharacterSprite" type="Sprite2D" parent="."]
 position = Vector2(180, 244)
 scale = Vector2(2, 2)
-texture = ExtResource("1_v0iea")
+texture = ExtResource("2_nytcm")
+script = ExtResource("3_nytcm")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
